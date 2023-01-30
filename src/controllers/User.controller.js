@@ -72,4 +72,20 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getUser = async (req, res) => {
+  try {
+    const { name, userId } = req.user;
+
+    if (name == undefined || userId == undefined) {
+      res.status(404);
+      return res.json({ message: "unauthorised", status: false });
+    }
+
+    res.json({ user: { name, userId }, status: true });
+  } catch (error) {
+    res.status(500);
+    return res.json({ message: "server error", status: false });
+  }
+};
+
+module.exports = { registerUser, loginUser, getUser };
