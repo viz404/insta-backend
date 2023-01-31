@@ -38,6 +38,20 @@ const getPosts = async (req, res) => {
   }
 };
 
+const getPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.user;
+
+    const post = await PostModel.find({ _id: id, userId });
+
+    return res.json({ data: post, status: true });
+  } catch (error) {
+    res.status(500);
+    return res.json({ message: "server error", status: false });
+  }
+};
+
 const createPost = async (req, res) => {
   try {
     const { title, body, device } = req.body;
@@ -106,4 +120,4 @@ const deletePost = async (req, res) => {
   }
 };
 
-module.exports = { getPosts, createPost, updatePost, deletePost };
+module.exports = { getPosts, createPost, updatePost, deletePost, getPostById };
