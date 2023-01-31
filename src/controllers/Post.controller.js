@@ -3,6 +3,7 @@ const { PostModel } = require("../models/Post.model");
 const getPosts = async (req, res) => {
   try {
     const { device, device1, device2, device3 } = req.query;
+    const { userId } = req.user;
     let posts = [];
 
     if (device || device1 || device2 || device3) {
@@ -24,10 +25,10 @@ const getPosts = async (req, res) => {
         array.push(device3);
       }
 
-      const filterObj = { device: { $in: array } };
+      const filterObj = { device: { $in: array }, userId };
       posts = await PostModel.find(filterObj);
     } else {
-      posts = await PostModel.find();
+      posts = await PostModel.find({ userId });
     }
 
     return res.json({ data: posts, status: true });
